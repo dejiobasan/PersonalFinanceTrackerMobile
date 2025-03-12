@@ -19,7 +19,7 @@ export default function Index() {
     >
       <View style={styles.overlay}></View>
 
-      <Icon name="wallet" size={50} color="blue" style={styles.icon} />
+      <Icon name="wallet" size={50} color="white" style={styles.icon} />
 
       {/* content */}
       <View style={styles.content}>
