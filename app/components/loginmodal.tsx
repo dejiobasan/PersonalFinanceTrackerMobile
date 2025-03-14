@@ -25,7 +25,7 @@ const Loginmodal = ({
     password: "",
   });
 
-  const { login, loading } = useUserStore();
+  const {login, loading, user } = useUserStore();
   const handleInputChange = (name: string, value: string) => {
     setFormdata({ ...formdata, [name]: value });
   };
@@ -34,7 +34,11 @@ const Loginmodal = ({
     try {
       await login(formdata);
       onClose();
-      router.push("/admindashboard");
+      if (user?.Role === "Admin") {
+        router.push("/admindashboard");
+      } else {
+        router.push("/userdashboard");
+      }
     } catch (error) {
       console.error("Login failed", error);
     }
