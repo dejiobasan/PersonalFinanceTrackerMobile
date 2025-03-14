@@ -1,14 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet } from "react-native";
+import React, { useState } from "react";
 
-const login = () => {
-  return (
-    <View>
-      <Text>login</Text>
-    </View>
-  )
+import Loginmodal from "./components/loginmodal";
+import { useRouter } from "expo-router";
+
+export default function Login() {
+  const [modalVisible, setModalVisible] = useState(true);
+  const router = useRouter();
+
+  const handleClose = () => {
+    setModalVisible(false);
+    router.push("/");
+  };
+
+  return <Loginmodal visible={modalVisible} onClose={handleClose} />;
 }
 
-export default login
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

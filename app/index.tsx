@@ -8,7 +8,8 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 
-export default function Index() {
+
+export default function Homepage() {
   const router = useRouter();
 
   return (
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject, // Makes it cover the entire screen
-    backgroundColor: "rgba(0, 0, 255, 0.5)", // Adjust opacity (A) for blending effect
+    backgroundColor: "rgba(59, 130, 246, 0.5)", // Adjust opacity (A) for blending effect
   },
   content: {
     flex: 1,

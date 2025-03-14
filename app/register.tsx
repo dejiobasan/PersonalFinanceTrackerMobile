@@ -1,14 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {
+  StyleSheet,
+  
+} from "react-native";
+import React, { useState } from "react";
+import Registermodal from "./components/registermodal";
+import { useRouter } from "expo-router";
 
-const register = () => {
+
+const Register = () => {
+  const [modalVisible, setModalVisible] = useState(true); // Automatically show modal
+  const router = useRouter();
+  const handleClose = () => {
+    setModalVisible(false);
+    router.push("/");
+  };
+
   return (
-    <View>
-      <Text>register</Text>
-    </View>
-  )
-}
+    <Registermodal visible={modalVisible} onClose={handleClose} />
+  );
+};
 
-export default register
+export default Register;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
