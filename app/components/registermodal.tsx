@@ -4,6 +4,7 @@ import {
   View,
   Modal,
   TextInput,
+  Image,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
@@ -11,6 +12,7 @@ import {
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { useUserStore } from "@/stores/useUserStore";
+import * as ImagePicker from "expo-image-picker";
 
 const Registermodal = ({
   visible,
@@ -37,6 +39,25 @@ const Registermodal = ({
     setFormData({ ...formData, [name]: value });
   };
 
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission denied! Please allow access to pick an image.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFormData({ ...formData, image: result.assets[0].uri });
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       await register(formData);
@@ -55,6 +76,7 @@ const Registermodal = ({
       console.error("Login failed", error);
     }
   };
+
   return (
     <Modal
       visible={visible}
@@ -77,6 +99,7 @@ const Registermodal = ({
             value={formData.name}
             onChangeText={(value) => handleInputChange("name", value)}
           />
+          
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -85,6 +108,7 @@ const Registermodal = ({
             onChangeText={(value) => handleInputChange("email", value)}
             keyboardType="email-address"
           />
+
           <TextInput
             style={styles.input}
             placeholder="Username"
@@ -92,6 +116,7 @@ const Registermodal = ({
             value={formData.username}
             onChangeText={(value) => handleInputChange("username", value)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -100,6 +125,7 @@ const Registermodal = ({
             onChangeText={(value) => handleInputChange("password", value)}
             secureTextEntry
           />
+
           <TextInput
             style={styles.input}
             placeholder="Confirm Password"
@@ -110,6 +136,7 @@ const Registermodal = ({
             }
             secureTextEntry
           />
+
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
@@ -118,6 +145,17 @@ const Registermodal = ({
             onChangeText={(value) => handleInputChange("number", value)}
             keyboardType="numeric"
           />
+
+          <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+            <Text style={styles.uploadText}>📤 Upload Image</Text>
+          </TouchableOpacity>
+
+          {formData.image ? (
+            <Image
+              source={{ uri: formData.image }}
+              style={styles.imagePreview}
+            />
+          ) : null}
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit}
@@ -172,6 +210,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
     backgroundColor: "#f9f9f9",
+  },
+  uploadButton: {
+    width: "100%",
+    padding: 12,
+    backgroundColor: "#1E3A8A",
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  uploadText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  imagePreview: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginTop: 10,
   },
   button: {
     width: "100%",
