@@ -4,15 +4,16 @@ import {
   View,
   Modal,
   TextInput,
-  Image,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Image,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
-import { useUserStore } from "@/stores/useUserStore";
 import * as ImagePicker from "expo-image-picker";
+import { useUserStore } from "@/stores/useUserStore";
 
 const Registermodal = ({
   visible,
@@ -39,19 +40,29 @@ const Registermodal = ({
     setFormData({ ...formData, [name]: value });
   };
 
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permission denied! Please allow access to pick an image.");
+  const pickImage = async (fromCamera: boolean) => {
+    const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
+    const { status: galleryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (cameraStatus !== "granted" || galleryStatus !== "granted") {
+      Alert.alert(
+        "Permissions Required",
+        "Please grant camera and gallery access to upload an image."
+      );
       return;
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
+    const result = await (fromCamera
+      ? ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [4, 4],
+          quality: 1,
+        })
+      : ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          aspect: [4, 4],
+          quality: 1,
+        }));
 
     if (!result.canceled) {
       setFormData({ ...formData, image: result.assets[0].uri });
@@ -73,7 +84,7 @@ const Registermodal = ({
       onClose();
       router.push("/login");
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Registration failed", error);
     }
   };
 
@@ -91,7 +102,9 @@ const Registermodal = ({
       >
         <View style={styles.overlay} />
         <View style={styles.modalContainer}>
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Register</Text>
+
+          {/* Name Input */}
           <TextInput
             style={styles.input}
             placeholder="Name"
@@ -99,7 +112,8 @@ const Registermodal = ({
             value={formData.name}
             onChangeText={(value) => handleInputChange("name", value)}
           />
-          
+
+          {/* Email Input */}
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -109,6 +123,7 @@ const Registermodal = ({
             keyboardType="email-address"
           />
 
+          {/* Username Input */}
           <TextInput
             style={styles.input}
             placeholder="Username"
@@ -117,6 +132,7 @@ const Registermodal = ({
             onChangeText={(value) => handleInputChange("username", value)}
           />
 
+          {/* Password Input */}
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -126,6 +142,7 @@ const Registermodal = ({
             secureTextEntry
           />
 
+          {/* Confirm Password Input */}
           <TextInput
             style={styles.input}
             placeholder="Confirm Password"
@@ -137,6 +154,7 @@ const Registermodal = ({
             secureTextEntry
           />
 
+          {/* Phone Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
@@ -146,16 +164,31 @@ const Registermodal = ({
             keyboardType="numeric"
           />
 
-          <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
-            <Text style={styles.uploadText}>📤 Upload Image</Text>
-          </TouchableOpacity>
+          {/* Image Upload Buttons */}
+          <View style={styles.imageUploadContainer}>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={() => pickImage(false)}
+            >
+              <Text style={styles.uploadText}>📁 Choose from Gallery</Text>
+            </TouchableOpacity>
 
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={() => pickImage(true)}
+            >
+              <Text style={styles.uploadText}>📷 Take a Photo</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Show selected image preview */}
           {formData.image ? (
             <Image
               source={{ uri: formData.image }}
               style={styles.imagePreview}
             />
           ) : null}
+
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit}
@@ -186,8 +219,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // Makes it cover the entire screen
-    backgroundColor: "rgba(59, 130, 246, 0.5)", // Adjust opacity (A) for blending effect
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(59, 130, 246, 0.5)",
   },
   modalContainer: {
     width: "85%",
@@ -208,20 +241,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    marginBottom: 20,
+    marginBottom: 15,
     backgroundColor: "#f9f9f9",
   },
-  uploadButton: {
+  imageUploadContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: "100%",
+  },
+  uploadButton: {
+    flex: 1,
     padding: 12,
     backgroundColor: "#1E3A8A",
     borderRadius: 8,
     alignItems: "center",
+    marginHorizontal: 5,
     marginBottom: 10,
   },
   uploadText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
   imagePreview: {
@@ -238,6 +277,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
+  closeButton: {
+    width: "100%",
+    padding: 12,
+    backgroundColor: "red",
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+  },
   buttonText: {
     color: "white",
     fontSize: 18,
@@ -247,13 +294,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "white",
     fontSize: 16,
-  },
-  closeButton: {
-    width: "100%",
-    padding: 12,
-    backgroundColor: "red",
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
   },
 });
