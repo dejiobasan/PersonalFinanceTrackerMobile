@@ -35,9 +35,9 @@ const Loginmodal = ({
       await login(formdata);
       onClose();
       if (user?.Role === "Admin") {
-        router.push("/admindashboard");
+        router.push("/adminPage");
       } else {
-        router.push("/userdashboard");
+        router.push("/userPage");
       }
     } catch (error) {
       console.error("Login failed", error);

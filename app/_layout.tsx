@@ -7,6 +7,7 @@ import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
   const { user, checkingAuth, checkAuth } = useUserStore();
+  const isAdmin = user?.Role === "Admin";
 
   useEffect(() => {
     checkAuth(); // Verify user session on app startup
@@ -30,13 +31,13 @@ export default function RootLayout() {
             <Stack.Screen name="register" />
             <Stack.Screen name="login" />
           </>
-        ) : user.Role === "Admin" ? (
+        ) : isAdmin ? (
           <>
-            <Stack.Screen name="admindashboard" />
+            <Stack.Screen name="adminPage" />
           </>
         ) : (
           <>
-            <Stack.Screen name="userdashboard" />
+            <Stack.Screen name="userPage" />
           </>
         )}
       </Stack>
