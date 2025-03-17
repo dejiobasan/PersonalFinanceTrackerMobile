@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Button,
   Text,
   View,
   Image,
@@ -10,7 +9,7 @@ import React, { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDashboardStore } from "@/stores/useDashboardStore";
-import { useRouter } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import UserChart from "./components/userChart";
 
 const Userdashboard = () => {
@@ -28,6 +27,7 @@ const Userdashboard = () => {
   }, [fetchUserDashboardData]);
 
   const router = useRouter();
+  const navigation = useNavigation();
 
   const userName = user?.Username || "User";
   const profileImage = user?.Image || "No image found";
@@ -72,14 +72,14 @@ const Userdashboard = () => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.addButton]}
-              onPress={() => router.navigate("/addTransactions")}
+              onPress={() => navigation.navigate("addTransactions" as never)}
             >
               <Text style={styles.buttonText}>Add Transaction</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, styles.historyButton]}
-              onPress={() => router.navigate("/transactionsPage")}
+              onPress={() => navigation.navigate("Transactions" as never)}
             >
               <Text style={styles.buttonText}>Transaction History</Text>
             </TouchableOpacity>
