@@ -31,7 +31,7 @@ const BottomTabs = ({ isAdmin }: { isAdmin: boolean }) => {
         tabBarActiveTintColor: "#3b82f6",
         tabBarInactiveTintColor: "white",
         tabBarStyle: {
-          backgroundColor: "#1d4ed8", // Dark background
+          backgroundColor: "#1d4ed8",
           paddingBottom: 5,
           paddingTop: 5,
           height: 100,
