@@ -56,7 +56,7 @@ export const useUserStore = create<AuthState>((set, get) => ({
       const response = await axios.post("/Users/register", data);
       if (response.data.success) {
         set({ user: response.data.User, loading: false });
-        await AsyncStorage.setItem("user", JSON.stringify(response.data.User)); // ✅ Store user in AsyncStorage
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.User));
         Toast.show({ type: "success", text1: response.data.message });
       } else {
         Toast.show({ type: "error", text1: response.data.message });
@@ -75,7 +75,7 @@ export const useUserStore = create<AuthState>((set, get) => ({
 
       if (response.data.success) {
         set({ user: response.data.User, loading: false });
-        await AsyncStorage.setItem("user", JSON.stringify(response.data.User)); // ✅ Store user persistently
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.User));
         Toast.show({ type: "success", text1: response.data.message });
       } else {
         Toast.show({ type: "error", text1: response.data.message });
@@ -90,7 +90,7 @@ export const useUserStore = create<AuthState>((set, get) => ({
   logout: async () => {
     try {
       await axios.post("/Users/logout");
-      await AsyncStorage.removeItem("user"); // ✅ Remove from AsyncStorage
+      await AsyncStorage.removeItem("user");
       set({ user: null });
       Toast.show({ type: "success", text1: "Logged out successfully" });
     } catch (error) {
