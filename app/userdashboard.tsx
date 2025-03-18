@@ -7,13 +7,13 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDashboardStore } from "@/stores/useDashboardStore";
 import { useRouter, useNavigation } from "expo-router";
 import UserChart from "./components/userChart";
+import Navbar from "./components/Navbar";
 
 const Userdashboard = () => {
-  const { user, logout } = useUserStore();
+  const { logout } = useUserStore();
   const {
     fetchUserDashboardData,
     totalUserCreditTransactions,
@@ -29,9 +29,6 @@ const Userdashboard = () => {
   const router = useRouter();
   const navigation = useNavigation();
 
-  const userName = user?.Username || "User";
-  const profileImage = user?.Image || "No image found";
-
   const handleLogout = () => {
     logout();
     router.replace("/login");
@@ -39,12 +36,7 @@ const Userdashboard = () => {
 
   return (
     <View>
-      <SafeAreaView style={styles.safeContainer}>
-        <View style={styles.header}>
-          <Text style={styles.greeting}>Hi, {userName}</Text>
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
-        </View>
-      </SafeAreaView>
+      <Navbar/>
       <View style={styles.boxContainer}>
         <Text style={styles.sectionTitle}>Transactions Overview</Text>
         <View style={styles.card}>
@@ -102,26 +94,6 @@ const Userdashboard = () => {
 export default Userdashboard;
 
 const styles = StyleSheet.create({
-  safeContainer: {
-    backgroundColor: "white",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 15,
-    backgroundColor: "white",
-  },
-  greeting: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
   container: {
     padding: 15,
   },

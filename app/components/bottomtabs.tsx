@@ -6,6 +6,7 @@ import ContactAdmin from "../contactAdmin";
 import TransactionsPage from "../transactionsPage";
 import Userdashboard from "../userdashboard";
 import Admindashboard from "../admindashboard";
+import ViewAllTransactions from "../viewAllTransactions";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,7 @@ const BottomTabs = ({ isAdmin }: { isAdmin: boolean }) => {
             Transactions: "attach-money",
             addTransactions: "add-circle",
             ContactAdmin: "contact-support",
+            AllTransactions: "attach-money",
           };
           return (
             <Icon
@@ -49,7 +51,15 @@ const BottomTabs = ({ isAdmin }: { isAdmin: boolean }) => {
       )}
       <Tab.Screen name="Transactions" component={TransactionsPage} />
       <Tab.Screen name="addTransactions" component={AddTransactions} />
-      <Tab.Screen name="ContactAdmin" component={ContactAdmin} />
+
+      {isAdmin ? (
+        <Tab.Screen
+          name="AllTransactions"
+          component={ViewAllTransactions}
+        />
+      ) : (
+        <Tab.Screen name="ContactAdmin" component={ContactAdmin} />
+      )}
     </Tab.Navigator>
   );
 };

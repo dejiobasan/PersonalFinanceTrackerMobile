@@ -1,20 +1,86 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
+import { useDashboardStore } from "@/stores/useDashboardStore";
+import { useRouter, useNavigation } from "expo-router";
+import AdminChart from "./components/adminChart";
+import Navbar from "./components/Navbar";
 
 const Admindashboard = () => {
-  const { user } = useUserStore();
-  const userName = user?.Username || "User";
-  const profileImage = user?.Image || "No image found";
+  const { logout } = useUserStore();
+
+  const {
+    fetchDashboardData,
+    totalCreditTransactions,
+    totalDebitTransactions,
+    totalUsers,
+    averageTransactions,
+  } = useDashboardStore();
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+  const router = useRouter();
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    logout();
+    router.replace("/login");
+  };
+
   return (
     <View>
-      <SafeAreaView style={styles.safeContainer}>
-        <View style={styles.header}>
-          <Text style={styles.greeting}>Hi, {userName}</Text>
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+      <Navbar/>
+      <View style={styles.boxContainer}>
+        <Text style={styles.sectionTitle}>Transactions Overview</Text>
+        <View style={styles.card}>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Total Users</Text>
+              <Text style={styles.value}>{totalUsers}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>Total Credit Transactions</Text>
+              <Text style={styles.value}>{totalCreditTransactions}</Text>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Total Debit Transactions</Text>
+              <Text style={styles.value}>{totalDebitTransactions}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>Avg Transactions</Text>
+              <Text style={styles.value}>&#8358;{averageTransactions}</Text>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[styles.button, styles.addButton]}
+              onPress={() => navigation.navigate("addTransactions" as never)}
+            >
+              <Text style={styles.buttonText}>Add Transaction</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, styles.historyButton]}
+              onPress={() => navigation.navigate("Transactions" as never)}
+            >
+              <Text style={styles.buttonText}>Transaction History</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </SafeAreaView>
+      </View>
+      <View style={styles.boxContainer}>
+        <Text style={styles.sectionTitle}>Transactions Trends</Text>
+        <AdminChart />
+      </View>
+      <View style={styles.logoutContainer}>
+        <TouchableOpacity style={styles.logoutButton}  onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -22,24 +88,80 @@ const Admindashboard = () => {
 export default Admindashboard;
 
 const styles = StyleSheet.create({
-  safeContainer: {
-    backgroundColor: "white",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  container: {
     padding: 15,
-    backgroundColor: "white",
   },
-  greeting: {
+  text: {
+    fontWeight: "bold",
+    fontSize: 17,
+  },
+  boxContainer: {
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "black",
+    marginBottom: 10,
   },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+  card: {
+    backgroundColor: "#1a84b8", // Dark Red Gradient Theme
+    borderRadius: 15,
+    padding: 20,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  column: {
+    flex: 1,
+    alignItems: "center",
+  },
+  label: {
+    fontSize: 14,
+    color: "white",
+    opacity: 0.7,
+  },
+  value: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    marginHorizontal: 5,
+  },
+  addButton: {
+    backgroundColor: "#1d4ed8",
+  },
+  historyButton: {
+    backgroundColor: "#1d4ed8",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  logoutContainer: { 
+    marginTop: 50,
+    marginLeft: 20, 
+    width: "30%" 
+  },
+  logoutButton: {
+    width: "100%",
+    padding: 12,
+    backgroundColor: "#007BFF",
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
   },
 });

@@ -4,28 +4,29 @@ import { BarChart } from "react-native-chart-kit";
 import { useDashboardStore } from "@/stores/useDashboardStore";
 import { useUserStore } from "@/stores/useUserStore";
 
-const UserChart = () => {
+const AdminChart = () => {
   const {
-    fetchUserDashboardData,
-    totalUserCreditTransactions,
-    totalUserDebitTransactions,
+    fetchDashboardData,
+    totalCreditTransactions,
+    totalDebitTransactions,
+    totalUsers,
+    averageTransactions,
   } = useDashboardStore();
-
   const { user } = useUserStore();
 
   useEffect(() => {
-    fetchUserDashboardData();
-  }, [fetchUserDashboardData]);
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
-  const  totalCredit = totalUserCreditTransactions;
-  const  totalDebit = totalUserDebitTransactions;
+  const totalCredit = totalCreditTransactions;
+  const totalDebit = totalDebitTransactions;
   const userName = user?.Name || "User";
 
   const data = {
     labels: ["Total Credit", "Total Debit"],
     datasets: [{ data: [totalCredit, totalDebit] }],
   };
-  
+
   const chartConfig = {
     backgroundGradientFrom: "#fff",
     backgroundGradientTo: "#fff",
@@ -35,6 +36,7 @@ const UserChart = () => {
     style: { borderRadius: 16 },
     propsForDots: { r: "6", strokeWidth: "2", stroke: "#0d7fd1" },
   };
+
 
   return (
     <View style={{ alignItems: "center", marginTop: 20 }}>
@@ -51,6 +53,6 @@ const UserChart = () => {
   );
 };
 
-export default UserChart;
+export default AdminChart;
 
 const styles = StyleSheet.create({});
