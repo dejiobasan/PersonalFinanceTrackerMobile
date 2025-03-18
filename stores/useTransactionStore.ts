@@ -7,7 +7,7 @@ interface Transaction {
   User: string;
   Amount: number;
   Description: string;
-  Type: string;
+  Type: "Credit" | "Debit";
   Date: string;
 }
 
@@ -96,7 +96,7 @@ export const useTransactionStore = create<TransactionStore>((set) => ({
     set({ loading: true });
     try {
       const response = await axios.get(`/Transactions/getTransaction/${id}`);
-      set({ transactions: response.data.Transaction, loading: false });
+      set({ transactions: [response.data.Transaction], loading: false });
     } catch (error) {
       set({ loading: false });
       console.error(error);
@@ -112,7 +112,9 @@ export const useTransactionStore = create<TransactionStore>((set) => ({
         data
       );
       set((prevState) => ({
-        transactions: [...prevState.transactions, response.data],
+        transactions: prevState.transactions.map((transaction) =>
+          transaction._id === id ? response.data : transaction
+        ),
         loading: false,
       }));
       Toast.show({type:"success", text1: response.data.message});
