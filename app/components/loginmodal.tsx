@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // Makes it cover the entire screen
-    backgroundColor: "rgba(59, 130, 246, 0.5)", // Adjust opacity (A) for blending effect
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(59, 130, 246, 0.5)",
   },
   modalContainer: {
     width: "85%",

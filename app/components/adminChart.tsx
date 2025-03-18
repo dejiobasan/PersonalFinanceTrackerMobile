@@ -31,8 +31,8 @@ const AdminChart = () => {
     backgroundGradientFrom: "#fff",
     backgroundGradientTo: "#fff",
     decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(13, 127, 209, ${opacity})`, // Bar color
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Label color
+    color: (opacity = 1) => `rgba(13, 127, 209, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: { borderRadius: 16 },
     propsForDots: { r: "6", strokeWidth: "2", stroke: "#0d7fd1" },
   };

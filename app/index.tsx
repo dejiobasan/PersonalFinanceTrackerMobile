@@ -22,12 +22,10 @@ export default function Homepage() {
 
       <Icon name="wallet" size={50} color="white" style={styles.icon} />
 
-      {/* content */}
       <View style={styles.content}>
         <Text style={styles.text}>Manage your Transactions effortlessly</Text>
       </View>
 
-      {/* button view */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
@@ -53,8 +51,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // Makes it cover the entire screen
-    backgroundColor: "rgba(59, 130, 246, 0.5)", // Adjust opacity (A) for blending effect
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(59, 130, 246, 0.5)",
   },
   content: {
     flex: 1,
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: "absolute",
-    bottom: 40, // Space from bottom
+    bottom: 40,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",

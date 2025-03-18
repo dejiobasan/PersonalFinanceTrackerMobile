@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   card: {
-    backgroundColor: "#1a84b8", // Dark Red Gradient Theme
+    backgroundColor: "#1a84b8",
     borderRadius: 15,
     padding: 20,
   },

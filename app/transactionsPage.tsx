@@ -49,8 +49,6 @@ const TransactionList = () => {
       <Navbar />
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Your Transactions</Text>
-
-        {/* Filter Buttons */}
         <View style={styles.filterContainer}>
           {["all", "Credit", "Debit"].map((type) => (
             <TouchableOpacity
@@ -70,7 +68,6 @@ const TransactionList = () => {
           ))}
         </View>
 
-        {/* Transactions List */}
         {filteredTransactions.length > 0 ? (
           <FlatList
             data={filteredTransactions}

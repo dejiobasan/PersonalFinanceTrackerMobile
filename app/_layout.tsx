@@ -10,7 +10,7 @@ export default function RootLayout() {
   const isAdmin = user?.Role === "Admin";
 
   useEffect(() => {
-    checkAuth(); // Verify user session on app startup
+    checkAuth();
   }, []);
 
   if (checkingAuth) {
