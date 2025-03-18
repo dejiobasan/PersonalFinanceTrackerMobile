@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#F8F9FA",
     borderRadius: 8,
-    marginRight: 10, // 👈 Adds spacing between items
+    marginRight: 10, 
     elevation: 3,
     width: 150,
   },
