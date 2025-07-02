@@ -140,7 +140,7 @@ export const useTransactionStore = create<TransactionStore>((set) => ({
       Toast.show({type:"success", text1: response.data.message});
     } catch (error) {
       console.error(error);
-      Toast.show({type:"success", text1: "An error occurred while deleting transaction"});
+      Toast.show({type:"error", text1: "An error occurred while deleting transaction"});
       set({ loading: false });
     }
   },
